@@ -2,17 +2,25 @@ import { useEffect, useState } from "react";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { defaultStocks, Stock } from "@/data/stocks";
-import { getAllVotedStocks, getVoteData, VoteData } from "@/lib/storage";
+import { getAllVotedStocks, getVoteData, getFeaturedStock, VoteData } from "@/lib/storage";
 import { Card, CardContent } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { ThumbsDown, ThumbsUp } from "lucide-react";
+import { ThumbsDown, ThumbsUp, Flame, ArrowRight, TrendingUp, TrendingDown } from "lucide-react";
+
+interface FeaturedStock {
+  vote: VoteData;
+  stock?: Stock;
+}
 
 export default function HomePage() {
   const [totalLikes, setTotalLikes] = useState(0);
   const [totalDislikes, setTotalDislikes] = useState(0);
   const [topDisliked, setTopDisliked] = useState<(VoteData & { stock?: Stock })[]>([]);
+  const [featured, setFeatured] = useState<FeaturedStock | null>(null);
 
   useEffect(() => {
+    // Ensure all default stocks have vote data in localStorage before reading aggregates
+    defaultStocks.forEach((s) => getVoteData(s.ticker));
+
     const allVotes = getAllVotedStocks();
     let likes = 0;
     let dislikes = 0;
@@ -36,6 +44,14 @@ export default function HomePage() {
         stock: defaultStocks.find((s) => s.ticker === v.ticker),
       }));
     setTopDisliked(sortedDisliked);
+
+    const featuredVote = getFeaturedStock();
+    if (featuredVote) {
+      setFeatured({
+        vote: featuredVote,
+        stock: defaultStocks.find((s) => s.ticker === featuredVote.ticker),
+      });
+    }
   }, []);
 
   const total = totalLikes + totalDislikes;
@@ -81,6 +97,106 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Today's Featured Stock */}
+      {featured && (
+        <section className="w-full py-12 border-b border-border bg-background">
+          <div className="container mx-auto px-4">
+            <div className="flex items-center gap-2 mb-6">
+              <Flame className="h-6 w-6 text-accent" style={{ color: "#ff8c00" }} />
+              <h2 className="text-2xl font-black tracking-tight" style={{ color: "#ff8c00" }}>
+                今日の注目銘柄
+              </h2>
+              <span className="text-xs px-2 py-0.5 rounded-full border font-mono ml-1"
+                style={{ borderColor: "#ff8c00", color: "#ff8c00", background: "rgba(255,140,0,0.08)" }}>
+                24h アクティブ
+              </span>
+            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+            >
+              <Link href={`/stock/${featured.vote.ticker}`}>
+                <div className="group relative rounded-xl border overflow-hidden cursor-pointer transition-all duration-200 hover:scale-[1.01]"
+                  style={{ borderColor: "rgba(255,140,0,0.4)", background: "rgba(255,140,0,0.04)" }}>
+                  {/* Animated glow bar at top */}
+                  <div className="h-1 w-full" style={{ background: "linear-gradient(90deg, #00f0ff, #ff8c00, #ff003c)" }} />
+                  <div className="p-6 md:p-8 flex flex-col md:flex-row md:items-center gap-6">
+                    {/* Stock identity */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-3 mb-2">
+                        <span className="font-mono text-sm px-2 py-1 rounded bg-muted text-muted-foreground">
+                          {featured.vote.ticker}
+                        </span>
+                        {featured.stock?.sector && (
+                          <span className="text-xs text-muted-foreground">{featured.stock.sector}</span>
+                        )}
+                      </div>
+                      <h3 className="text-3xl font-black truncate mb-1">
+                        {featured.stock?.name ?? featured.vote.ticker}
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        {featured.vote.voteCount24h
+                          ? `過去24時間で ${featured.vote.voteCount24h} 票の動き — 今最も盛り上がっている銘柄`
+                          : `現在最も投票数が多い注目銘柄`}
+                      </p>
+                    </div>
+
+                    {/* Sentiment display */}
+                    <div className="flex flex-col gap-3 min-w-[220px]">
+                      {(() => {
+                        const tot = featured.vote.likes + featured.vote.dislikes;
+                        const lPct = tot > 0 ? (featured.vote.likes / tot) * 100 : 50;
+                        const dPct = 100 - lPct;
+                        const sentiment = lPct >= 50 ? "like" : "dislike";
+                        return (
+                          <>
+                            <div className="flex items-center justify-between text-sm font-bold mb-1">
+                              <span className="flex items-center gap-1 text-primary">
+                                <TrendingUp className="h-4 w-4" />
+                                好き {lPct.toFixed(1)}%
+                              </span>
+                              <span className="flex items-center gap-1 text-secondary">
+                                嫌い {dPct.toFixed(1)}%
+                                <TrendingDown className="h-4 w-4" />
+                              </span>
+                            </div>
+                            <div className="w-full h-4 rounded-full overflow-hidden flex">
+                              <div className="h-full transition-all duration-700"
+                                style={{ width: `${lPct}%`, background: "hsl(186 100% 50%)" }} />
+                              <div className="h-full flex-1"
+                                style={{ background: "hsl(347 100% 50%)" }} />
+                            </div>
+                            <div className="flex justify-between text-xs text-muted-foreground">
+                              <span>{featured.vote.likes.toLocaleString()} 票</span>
+                              <span className="font-mono">{tot.toLocaleString()} 総票数</span>
+                              <span>{featured.vote.dislikes.toLocaleString()} 票</span>
+                            </div>
+                            <div className="mt-1 text-center">
+                              <span className="text-xs font-bold px-3 py-1 rounded-full"
+                                style={sentiment === "like"
+                                  ? { background: "rgba(0,240,255,0.12)", color: "#00f0ff", border: "1px solid rgba(0,240,255,0.3)" }
+                                  : { background: "rgba(255,0,60,0.12)", color: "#ff003c", border: "1px solid rgba(255,0,60,0.3)" }}>
+                                {sentiment === "like" ? "好き派優勢" : "嫌い派優勢"}
+                              </span>
+                            </div>
+                          </>
+                        );
+                      })()}
+                    </div>
+
+                    {/* CTA arrow */}
+                    <div className="flex items-center self-center">
+                      <ArrowRight className="h-8 w-8 text-muted-foreground group-hover:text-foreground group-hover:translate-x-1 transition-all" />
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </motion.div>
+          </div>
+        </section>
+      )}
 
       {/* Popular Stocks Grid */}
       <section className="w-full py-16 container mx-auto px-4">
