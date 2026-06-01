@@ -1,0 +1,47 @@
+# Project Name
+STOCK JUDGE (株の好き嫌い.com) - The Ultimate Anonymous Stock Sentiment & Real-time Chart Platform
+
+# Objective
+Rebuild the existing application into a dark, high-engagement, crowdsourced sentiment platform modeled after the popular Japanese site "SukiKira.com". Users can vote "好き (Like/Buy)" or "嫌い (Dislike/Sell)" on any Japanese stock, view real-time charts, read anonymous divided discussions, and dynamically rank the most hated/loved companies.
+
+# Core System Specifications
+
+## 1. Dark & High-Contrast Obsidian UI
+- Background: Pitch black/dark charcoal (#0c0c0e) to create an underground, sterile community vibe.
+- Accent Colors:
+  - Like/Buy (好き派): Neon Blue/Cyan (#00f0ff)
+  - Dislike/Sell (嫌い派): Neon Blood Red (#ff003c)
+
+## 2. Expanded Database & Dynamic Search Bar
+- Support a massive database of Japanese stocks (fetch dynamically).
+- The search bar must auto-complete when users type a 4-digit JPN stock code (e.g., 3778, 4258, 3350) or Japanese company name (e.g., さくらインターネット, 網屋, メタプラネット).
+- If the stock code is not in the default list, automatically fetch its data from yfinance by appending ".T".
+
+## 3. Real-Time TradingView Chart Integration
+- Embed the official **TradingView Chart Widget** (iframe style) on each stock's detail page.
+- Dynamically reconstruct the symbol. For example, if the user loads "3778" or "3778.T", the TradingView symbol should be rendered as `TSE:3778` inside the widget.
+- Chart parameters: Dark theme, Japanese locale, daily interval, hidden sidebar, timezone: Asia/Tokyo.
+
+## 4. Binary Voting Engine (SukiKira Style)
+- Display two giant, prominent voting buttons on each stock's page:
+  - LEFT: 「好き（応援・買い目線）」 (Neon Blue)
+  - RIGHT: 「嫌い（批判・売り目線）」 (Neon Red)
+- Calculate and display the real-time "Dislike Ratio" (嫌い派の割合):
+  - Formula: Dislike % = (Dislikes / (Likes + Dislikes)) * 100
+- Save votes persistently in the database (Supabase) or LocalStorage.
+
+## 5. Dynamic Leaderboard (地獄の嫌われ銘柄＆天使の好かれ銘柄ランキング)
+- Create a dedicated "Ranking" page with two tabs:
+  - Tab 1: "嫌われ銘柄ランキング" (Sorted by Dislike % descending).
+  - Tab 2: "好かれ銘柄ランキング" (Sorted by Like % descending).
+- Establish a "minimum vote threshold" (e.g., at least 10 votes) for a stock to enter the ranking to prevent spam.
+
+## 6. SukiKira Split-BBS (対立型2カラム掲示板)
+The comment section must be divided into **two distinct columns** to foster active, engaging debates between bulls and bears:
+- Left Column: "好き派の意見（ロングの主張）"
+  - Only allows users who voted "好き" to post.
+- Right Column: "嫌い派の意見（ショートの呪い）"
+  - Only allows users who voted "嫌い" to post.
+- Each comment must show: Nickname (Default: 名無しのホルダー/名無しの売り豚), Time, and a sub-vote "賛成 (Agree)" / "反対 (Disagree)" button.
+
+Please rebuild the entire frontend layout to match this highly addictive dual-column voting and comment system. Integrate the real-time TradingView widget dynamically for any requested Japanese ticker.
