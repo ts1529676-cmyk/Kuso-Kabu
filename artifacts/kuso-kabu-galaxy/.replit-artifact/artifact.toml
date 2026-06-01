@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "クソ株ギャラクシー"
+version = "1.0.0"
+id = "artifacts/kuso-kabu-galaxy"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22260
+
+[services.development]
+run = "pnpm --filter @workspace/kuso-kabu-galaxy run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/kuso-kabu-galaxy", "run", "build" ]
+publicDir = "artifacts/kuso-kabu-galaxy/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22260"
+BASE_PATH = "/"

@@ -1,0 +1,47 @@
+# Project Title
+KUSO-KABU GALAXY (クソ株ギャラクシー) - 日本市場の「地獄銘柄」エンタメ格付けデータベース
+
+# Objective
+Create a highly engaging, satirical, and fully functional Japanese-language web directory and community board (BBS) that lists, ranks, and roasts Japan's most notorious speculative/failed stocks (仕手株・クソ株) based strictly on REAL financial disclosures and historical facts (e.g., extreme dilutions, auditing disclaimer of opinion, immediate post-IPO downward profit revisions, and debt excesses).
+
+# Core System Specification
+
+## 1. Aesthetic & UI Design (Dark Satire Theme)
+- Theme: "Hazardous Waste" or "Digital Hell" aesthetic (Deep black background with toxic neon purple, neon green, and warning orange accents).
+- High-impact typography. Use funny, distinct Japanese stock market slang (e.g., 「お祈りホルダー」「爆速MSワラント」「上場ゴール」「虚無IR」「カイロスの塵」).
+
+## 2. Monthly Kuso-Kabu Ranking Board (Based on Real 2025-2026 Facts)
+Hardcode a list of legendary Japanese stocks on the main ranking directory. Each entry must have its ticker, current status, and a brutal, factual roast:
+
+1. 【ロゴスホールディングス (205A)】
+   - クソ株大賞理由: 2024年末に華々しく上場後、わずか数ヶ月後の2025年1月に「営業利益58%減」「配当約3分の1へ減配」という、お手本のような爆速「上場ゴール」を達成。個人投資家を奈落の底へ突き落とした。
+2. 【ブイキューブ (3681)】
+   - クソ株大賞理由: 2026年6月26日に上場廃止（整理銘柄）が決定。取締役会無承認の融資トラブル、監査法人からの意見不表明、債務超過を経て、最終スクイーズアウト価格は驚愕の「1株10円」へ大幅減額。
+3. 【サンウェルズ (9229)】
+   - クソ株大賞理由: 介護・ヘルスケアの優等生から一転、不正請求疑惑が急浮上し、第三者委員会の設置と決算発表延期を連発。株価は天空から一瞬で地底へワープ。
+4. 【メタプラネット (3350)】
+   - クソ株大賞理由: 万年赤字のボロ株から、突如「アジア版マイクロストラテジー」を自称してビットコインを買い漁り、株価が140円から3,000円へ大暴騰。しかしその裏で、個人への凄まじい「MSワラント」新株行使による大希薄化が牙を剥く。
+
+## 3. "Holders Lament" BBS (お祈りホルダー達の懺悔室 - Comment Section)
+- Below each stock's roast page, implement a real-time, anonymous Message Board (掲示板).
+- Fields required for posting:
+  - ニックネーム（Nickname）※デフォルトは「名無しの含み損」
+  - 平均取得単価（Average Entry Price in JPY）
+  - 懺悔の書き込み内容（Comment Text）
+- Add an interactive button: "いいね（慰める）" and "悲しいね（自業自得）" counters for each comment.
+- Storage: Use LocalStorage (for client-side mock demo) or Supabase (for persistent production database) to store comments.
+
+## 4. "Generate Kuso-Kabu Certificate" (クソ株被害届ジェネレーター)
+- A mock fun utility: Let users enter their ticker, their loss amount, and generate a downloadable/shareable image or beautiful card titled "クソ株被災証明書". 
+- This will drive extreme viral traffic on X (Twitter).
+
+# Complete Localized Text Requirements (Japanese UI)
+Make sure ALL text in the app is in native, witty Japanese. 
+- Use terms like:
+  - "月間クソ株ランキング" (Monthly Ranking)
+  - "なぜクソ株なのか？" (Why it's a trash stock)
+  - "公式やらかし開示資料リンク" (Official disclosure links)
+  - "追証アラート" (Margin Call Alerts)
+  - "今月の地獄行き特急券" (Sarcastic description for extreme low-float shite-kabu)
+
+Please build the Landing Page with the ranking table first, then code the dynamic anonymous comment system (BBS) for each stock profile page.
