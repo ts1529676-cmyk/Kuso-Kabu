@@ -50,10 +50,7 @@ export function NavBar() {
     <header className="sticky top-0 z-50 w-full border-b border-border bg-card">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link href="/" className="text-xl font-black tracking-tighter" data-testid="link-home">
-          <span className="text-foreground">株の</span>
-          <span className="text-primary drop-shadow-[0_0_8px_rgba(0,240,255,0.5)]">好き</span>
-          <span className="text-foreground">・</span>
-          <span className="text-secondary drop-shadow-[0_0_8px_rgba(255,0,60,0.5)]">嫌い</span>
+          <span className="text-secondary drop-shadow-[0_0_8px_rgba(255,0,60,0.5)]">クソ株</span>
           <span className="text-foreground">.com</span>
         </Link>
 

@@ -101,18 +101,9 @@ export function getComments(ticker: string): BBSComment[] {
       return JSON.parse(stored);
     } catch(e) {}
   }
-  
-  // Seed 4 example comments
-  const now = Date.now();
-  const seed: BBSComment[] = [
-    { id: "1", ticker, side: "like", nickname: "名無しのホルダー", comment: "業績回復してるし、ここからが本番でしょ。握力試されてる。", timestamp: now - 1000 * 60 * 30, agrees: 12, disagrees: 2 },
-    { id: "2", ticker, side: "dislike", nickname: "空売り職人", comment: "チャート完全に終わってる。どう見ても下落トレンド継続中。", timestamp: now - 1000 * 60 * 60 * 2, agrees: 8, disagrees: 15 },
-    { id: "3", ticker, side: "like", nickname: "逆張りマン", comment: "この押し目は買い。機関の空売りも限界近いと思うけどね。", timestamp: now - 1000 * 60 * 60 * 5, agrees: 24, disagrees: 5 },
-    { id: "4", ticker, side: "dislike", nickname: "逃げ遅れ", comment: "高値掴みしちゃった…もう無理。損切りします", timestamp: now - 1000 * 60 * 60 * 24, agrees: 5, disagrees: 40 },
-  ];
-  
-  localStorage.setItem(key, JSON.stringify(seed));
-  return seed;
+  // No seed data — start with empty comments
+  localStorage.setItem(key, JSON.stringify([]));
+  return [];
 }
 
 export function addComment(ticker: string, side: "like" | "dislike", nickname: string, comment: string): BBSComment[] {
