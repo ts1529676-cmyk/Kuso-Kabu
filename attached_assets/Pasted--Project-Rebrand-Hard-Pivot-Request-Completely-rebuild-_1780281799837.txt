@@ -1,0 +1,43 @@
+# Project Rebrand & Hard-Pivot Request
+Completely rebuild the existing application into "クソ株.com" (Kuso-Kabu.com), a strict and highly polished clone of the famous anonymous polling site "SukiKira.com" (好き嫌い.com), customized specifically for the Japanese stock market.
+
+# New Brand Name
+「クソ株.com」 (Kuso-Kabu.com / 〜東証上場銘柄の好き嫌い討論プラットフォーム〜)
+
+# Core Visual & UX Specification (SukiKira Clone Base)
+- Background: Sterile dark obsidian (#0a0a0c) to create an underground, highly addictive community atmosphere.
+- Every stock detail page must feature a giant, binary voting block:
+  - LEFT BUTTON: 「好き（応援・買い目線）」 (Neon Cyan/Blue, e.g., #00f0ff)
+  - RIGHT BUTTON: 「嫌い（批判・売り目線）」 (Neon Red, e.g., #ff003c)
+- Compute and display the real-time "Kira/Dislike Ratio" (嫌い派の比率):
+  - Formula: Kira % = (Dislikes / (Likes + Dislikes)) * 100
+
+# Required "Kuso-Kabu" Elements to Add
+
+## 1. "Why it's a Kuso-Kabu" Fact Sheet (やらかし概要欄)
+- Right above the voting block on each stock's page, render a concise, 2-line "Fact Sheet" summarizing the company's real-world financial disasters or stock crashes (e.g., "IPO downward revision," "massive MS warrant dilution," or "auditing issues") based on real TSE disclosures.
+
+## 2. Real-Time TradingView Chart Integration
+- Embed the official **TradingView Chart Widget** (iframe style) directly below the voting panel.
+- Dynamically convert the 4-digit JPN ticker (e.g., "3778" or "3778.T") into `TSE:3778` to render a zero-latency, real-time Japanese stock chart.
+
+## 3. Dynamic "Kira (Most Hated) Ranking" on Home Page
+- The main landing page must display a leaderboard of TSE stocks sorted by their `Kira %` (Dislike %).
+- Stocks with the highest Dislike % are crowned as the "Top Kuso-Kabu of the Month" (今月の殿堂入りクソ株). Establish a minimum vote threshold of 10 votes to enter.
+
+## 4. SukiKira Split-BBS (対立型2カラム掲示板)
+The comment section below the chart must be divided into **two distinct columns** to foster active, engaging debates between bulls and bears:
+- Left Column: "好き派の意見（ロングの主張）"
+  - Only allows users who voted "好き" to post. Default nickname: "名無しの買い煽り"
+- Right Column: "嫌い派の意見（売り目線・非難）"
+  - Only allows users who voted "嫌い" to post. Default nickname: "名無しの売り豚"
+- Each post can show: Date, average holding cost, and a sub-vote "賛成 (Agree)" / "反対 (Disagree)" button.
+
+# Complete Localized Text Requirements (Japanese)
+Make sure the entire application is written in authentic, native, and sharp Japanese stock-clan slang:
+- "クソ株ランキング" (Kuso-Kabu Ranking)
+- "投票する" (Cast Vote)
+- "好き派の主張" (Likes / Bulls comments)
+- "嫌い派の非難" (Dislikes / Bears comments)
+
+Please rebuild the application layout to match this highly addictive dual-column voting and comment system. Integrate the real-time TradingView widget and the yfinance statistics module seamlessly.
