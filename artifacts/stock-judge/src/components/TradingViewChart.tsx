@@ -14,14 +14,38 @@ interface OHLCBar {
   close: number;
 }
 
+async function fetchWithFallback(url: string): Promise<Response> {
+  const proxies = [
+    `https://corsproxy.io/?url=${encodeURIComponent(url)}`,
+    `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
+    `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
+  ];
+
+  for (const proxy of proxies) {
+    try {
+      const res = await fetch(proxy, { signal: AbortSignal.timeout(8000) });
+      if (res.ok) return res;
+    } catch {
+      // try next proxy
+    }
+  }
+  throw new Error("All proxies failed");
+}
+
 async function fetchStockData(ticker: string): Promise<OHLCBar[]> {
   const symbol = `${ticker}.T`;
   const url = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d&range=6mo`;
-  const proxy = `https://corsproxy.io/?url=${encodeURIComponent(url)}`;
 
-  const res = await fetch(proxy);
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  const json = await res.json();
+  const res = await fetchWithFallback(url);
+  let json: any;
+  const text = await res.text();
+  // allorigins wraps the response in {contents: "..."}
+  try {
+    const parsed = JSON.parse(text);
+    json = parsed?.contents ? JSON.parse(parsed.contents) : parsed;
+  } catch {
+    throw new Error("JSON parse failed");
+  }
 
   const result = json?.chart?.result?.[0];
   if (!result) throw new Error("No data");
