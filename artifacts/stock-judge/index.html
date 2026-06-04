@@ -1,6 +1,30 @@
 <!DOCTYPE html>
 <html lang="ja">
-  <head>
+  <!-- iPad用：エラーを画面に真っ赤に表示する魔法のスクリプト -->
+  <script>
+    window.onerror = function(message, source, lineno, colno, error) {
+      var div = document.createElement('div');
+      div.style.position = 'fixed';
+      div.style.top = '0';
+      div.style.left = '0';
+      div.style.width = '100%';
+      div.style.height = '100%';
+      div.style.backgroundColor = 'rgba(230, 0, 0, 0.95)';
+      div.style.color = 'white';
+      div.style.zIndex = '999999';
+      div.style.padding = '20px';
+      div.style.fontFamily = 'monospace';
+      div.style.fontSize = '14px';
+      div.style.overflow = 'auto';
+      div.style.boxSizing = 'border-box';
+      div.innerHTML = '<h1 style="font-size: 20px; margin-bottom: 10px;">🚨 画面が真っ白になった原因（エラー）:</h1>' +
+                      '<p><strong>メッセージ:</strong> ' + message + '</p>' +
+                      '<p><strong>ファイル:</strong> ' + source + ' (行: ' + lineno + ', 列: ' + colno + ')</p>' +
+                      '<p><strong>スタック（エラーの足跡）:</strong><br><pre style="white-space: pre-wrap; font-size: 12px; margin-top: 10px; background: rgba(0,0,0,0.3); padding: 10px;">' + (error ? error.stack : 'なし') + '</pre></p>';
+      document.body.appendChild(div);
+      return false;
+    };
+  </script><head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
     <title>クソ株.com</title>
